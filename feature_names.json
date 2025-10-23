@@ -1,0 +1,14 @@
+[
+  "url_length",
+  "num_digits",
+  "num_special_chars",
+  "num_dots",
+  "num_subdirs",
+  "hostname_length",
+  "has_https",
+  "has_ip",
+  "contains_login",
+  "contains_secure",
+  "contains_verify",
+  "contains_update"
+]

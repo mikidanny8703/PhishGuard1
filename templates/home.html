@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhishGuard - Smart Phishing Detection System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white shadow-md">
+    <div class="container mx-auto flex items-center justify-between py-4 px-6 relative">
+
+      <!-- Left: Logo -->
+      <div class="flex items-center space-x-2">
+        <h1 class="text-2xl font-bold">🛡️ PhishGuard</h1>
+      </div>
+
+      <!-- Center: Navigation -->
+      <nav class="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-8 text-sm font-medium">
+        <a href="#" class="hover:text-blue-200 transition">Home</a>
+        <a href="#about" class="hover:text-blue-200 transition">About</a>
+        <a href="#contact" class="hover:text-blue-200 transition">Contact</a>
+      </nav>
+
+      <!-- Right: Developer Login + Accessibility Hamburger -->
+      <div class="flex items-center space-x-4 relative">
+        <!-- Developer Login Icon -->
+        <a href="{{ url_for('login') }}" title="Developer Login" class="text-white text-xl hover:text-blue-200 transition">
+          🔐
+        </a>
+
+        <!-- Hamburger Menu -->
+        <button id="menuButton" class="text-white text-2xl focus:outline-none">
+          ☰
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="menuDropdown" class="hidden absolute right-0 mt-10 w-48 bg-white text-gray-800 rounded-lg shadow-lg border">
+          <button id="toggleDarkMode" class="block w-full text-left px-4 py-2 hover:bg-gray-100">🌙 Dark Mode</button>
+          <button id="toggleLargeText" class="block w-full text-left px-4 py-2 hover:bg-gray-100">🔠 Large Text</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto py-12 px-4 text-center">
+    <h2 class="text-2xl font-semibold mb-6">🔗 Scan a URL for Phishing Threats</h2>
+
+    <form id="urlScanForm" class="max-w-lg mx-auto mb-8">
+      <input id="urlInput" type="url" placeholder="Enter a website URL..."
+             class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 mb-4"
+             required>
+      <button type="submit"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+        🚀 Scan Now
+      </button>
+    </form>
+
+    <div id="scanResult" class="hidden mt-6 text-lg font-semibold"></div>
+
+    <!-- About Section -->
+    <section id="about" class="mt-20">
+      <h3 class="text-3xl font-bold mb-8 text-blue-600">About PhishGuard</h3>
+      <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+
+        <!-- Left: Text Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition duration-300">
+          <h4 class="text-xl font-semibold mb-4">🚀 Smart Protection</h4>
+          <p class="text-gray-600 leading-relaxed">
+            PhishGuard is an AI-powered phishing detection system built to protect users from fake and malicious websites.
+            It intelligently analyzes URLs using machine learning and pattern recognition to detect phishing attempts
+            before they can cause harm.
+          </p>
+        </div>
+
+        <!-- Right: Features Card -->
+        <div class="bg-blue-50 rounded-2xl shadow-lg p-8 hover:shadow-2xl transition duration-300">
+          <h4 class="text-xl font-semibold mb-4">🔍 Key Features</h4>
+          <ul class="text-gray-700 text-left space-y-3">
+            <li>✅ Real-time phishing detection using AI</li>
+            <li>⚡ Instant scanning and feedback</li>
+            <li>🔒 Secure data handling with encryption</li>
+            <li>🌐 Honeypot-based firewall defense</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="mt-24">
+      <h3 class="text-3xl font-bold mb-8 text-blue-600">Contact Us</h3>
+
+      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-10 hover:shadow-2xl transition duration-300">
+        <p class="text-gray-600 mb-6">
+          Have questions, suggestions, or partnership ideas? Reach out to our cybersecurity team — we’d love to connect with you.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-8 mt-6 text-gray-700">
+          <div class="flex flex-col items-center">
+            <div class="text-3xl mb-2">📧</div>
+            <h4 class="font-semibold mb-1">Email</h4>
+            <p class="text-sm">support@phishguard.ai</p>
+          </div>
+
+          <div class="flex flex-col items-center">
+            <div class="text-3xl mb-2">🌐</div>
+            <h4 class="font-semibold mb-1">Website</h4>
+            <p class="text-sm">www.phishguard.ai</p>
+          </div>
+
+          <div class="flex flex-col items-center">
+            <div class="text-3xl mb-2">📞</div>
+            <h4 class="font-semibold mb-1">Phone</h4>
+            <p class="text-sm">+60 123-456-789</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center py-6 mt-16">
+    © <span id="year"></span> PhishGuard AI — Smart Phishing Detection System
+  </footer>
+
+  <!-- JS -->
+  <script>
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // URL scan logic
+    document.getElementById("urlScanForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const urlInput = document.getElementById("urlInput").value.trim();
+      const resultDiv = document.getElementById("scanResult");
+
+      if (!urlInput) return;
+
+      resultDiv.classList.remove("hidden");
+      resultDiv.textContent = "🔍 Scanning... Please wait.";
+
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: urlInput })
+        });
+
+        const data = await response.json();
+
+        if (data.result === "Phishing") {
+          resultDiv.innerHTML = `⚠️ <span class="text-red-600">${data.result}</span>: ${urlInput}`;
+        } else {
+          resultDiv.innerHTML = `✅ <span class="text-green-600">${data.result}</span>: ${urlInput}`;
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = "❌ Error: Unable to connect to detection server.";
+      }
+    });
+
+    // Hamburger Menu
+    const menuButton = document.getElementById("menuButton");
+    const menuDropdown = document.getElementById("menuDropdown");
+
+    menuButton.addEventListener("click", () => {
+      menuDropdown.classList.toggle("hidden");
+    });
+
+    // Dark Mode Toggle
+    const toggleDarkMode = document.getElementById("toggleDarkMode");
+    toggleDarkMode.addEventListener("click", () => {
+      document.body.classList.toggle("bg-gray-900");
+      document.body.classList.toggle("text-white");
+      document.body.classList.toggle("bg-gray-50");
+      toggleDarkMode.textContent =
+        document.body.classList.contains("bg-gray-900") ? "☀️ Light Mode" : "🌙 Dark Mode";
+    });
+
+    // Large Text Toggle
+    const toggleLargeText = document.getElementById("toggleLargeText");
+    toggleLargeText.addEventListener("click", () => {
+      document.body.classList.toggle("text-xl");
+      toggleLargeText.textContent =
+        document.body.classList.contains("text-xl") ? "🔤 Normal Text" : "🔠 Large Text";
+    });
+
+    // Close dropdown on click outside
+    window.addEventListener("click", (e) => {
+      if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
+        menuDropdown.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>

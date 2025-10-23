@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+
+# Data / models (don't push large binary models)
+*.pkl
+*.joblib
+*.h5
+*.sqlite
+*.db
+*.log
+
+# other
+node_modules/

@@ -1,0 +1,17 @@
+body {
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+#scanResult {
+  transition: all 0.3s ease;
+  font-size: 1.25rem;
+}
+
+.hidden {
+  display: none;
+}
