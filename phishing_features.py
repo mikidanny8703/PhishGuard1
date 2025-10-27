@@ -1,17 +1,14 @@
-# phishing_features.py
-import re
 import numpy as np
+import re
 import tldextract
 
 def extract_features(url: str):
-    """Extract 12 numerical features from URL."""
     ext = tldextract.extract(url)
     domain = ext.domain or ""
-
-    feats = [
-        len(url),  # URL length
-        sum(c.isdigit() for c in url),  # number of digits
-        len(re.findall(r"[^a-zA-Z0-9]", url)),  # special chars
+    features = [
+        len(url),
+        sum(c.isdigit() for c in url),
+        len(re.findall(r"[^a-zA-Z0-9]", url)),
         url.count('.'),
         url.count('/'),
         len(domain),
@@ -20,6 +17,6 @@ def extract_features(url: str):
         1 if "login" in url.lower() else 0,
         1 if "secure" in url.lower() else 0,
         1 if "verify" in url.lower() else 0,
-        1 if "update" in url.lower() else 0,
+        1 if "update" in url.lower() else 0
     ]
-    return np.array(feats).reshape(1, -1)
+    return np.array(features).reshape(1, -1)
