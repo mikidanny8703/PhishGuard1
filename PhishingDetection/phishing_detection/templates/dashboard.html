@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhishGuard AI — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
+    <div class="text-lg font-bold">PhishGuard AI — Dashboard</div>
+    <div class="space-x-4">
+      <a href="{{ url_for('home') }}" class="hover:underline">Home</a>
+      <a href="{{ url_for('logout') }}" class="bg-white text-blue-600 px-3 py-1 rounded">Logout</a>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-3">
+      <h1 class="text-2xl font-semibold">Detection & Honeypot Logs</h1>
+
+      <div class="flex gap-3">
+        <a href="{{ url_for('download_logs') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+          ⬇️ Download CSV
+        </a>
+        <a href="{{ url_for('view_blacklist') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+          🔒 View Blacklist ({{ blacklist|length }})
+        </a>
+        <button id="deleteAllBtn" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">
+          🗑️ Delete All
+        </button>
+      </div>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="bg-white shadow p-4 rounded-lg flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+      <input id="searchBox" type="text" placeholder="Search IP, URL, or status..."
+             class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/2 focus:ring-2 focus:ring-blue-500 outline-none" />
+
+      <select id="statusFilter"
+              class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+        <option value="all">All Status</option>
+        <option value="Phishing">Phishing</option>
+        <option value="Access Denied">Access Denied</option>
+        <option value="Info">Info</option>
+      </select>
+    </div>
+
+    <!-- Log Table -->
+    <div class="bg-white shadow rounded-lg overflow-auto">
+      <table id="logsTable" class="min-w-full">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-3 text-left text-sm font-medium">Timestamp</th>
+            <th class="px-4 py-3 text-left text-sm font-medium">IP</th>
+            <th class="px-4 py-3 text-left text-sm font-medium">URL</th>
+            <th class="px-4 py-3 text-left text-sm font-medium">Status</th>
+            <th class="px-4 py-3 text-left text-sm font-medium">Action</th>
+          </tr>
+        </thead>
+        <tbody id="logsBody" class="divide-y">
+          {% for entry in entries %}
+          <tr class="hover:bg-gray-50" data-id="{{ entry.id }}">
+            <td class="px-4 py-3 text-sm text-gray-700">{{ entry.time }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ entry.ip }}</td>
+            <td class="px-4 py-3 text-sm text-blue-600 break-all">{{ entry.url }}</td>
+            <td class="px-4 py-3 text-sm">
+              {% if "Phishing" in entry.status %}
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded">Phishing</span>
+              {% elif "Access Denied" in entry.status %}
+                <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded">Access Denied</span>
+              {% elif "Info" in entry.status %}
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded">Info</span>
+              {% elif "honeypot" in entry.status %}
+                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded">Honeypot</span>
+              {% else %}
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded">{{ entry.status }}</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3 text-sm text-center">
+              <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const logsBody = document.getElementById('logsBody');
+    const searchBox = document.getElementById('searchBox');
+    const statusFilter = document.getElementById('statusFilter');
+    const latestThreatBox = document.getElementById('latestThreatBox');
+
+    /* =============== FILTERING =============== */
+    function filterTable() {
+      const searchTerm = searchBox.value.toLowerCase();
+      const statusValue = statusFilter.value;
+      const rows = logsBody.getElementsByTagName('tr');
+
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        if (cells.length === 0) continue;
+        const rowText = Array.from(cells).map(td => td.textContent.toLowerCase()).join(' ');
+        const statusText = cells[3]?.textContent.trim();
+
+        const matchesSearch = rowText.includes(searchTerm);
+        const matchesStatus = (statusValue === "all" || statusText === statusValue);
+
+        rows[i].style.display = (matchesSearch && matchesStatus) ? "" : "none";
+      }
+    }
+    searchBox.addEventListener('input', filterTable);
+    statusFilter.addEventListener('change', filterTable);
+
+    /* =============== DELETE SINGLE =============== */
+    async function deleteEntry(id, row) {
+      if (!confirm("Are you sure you want to delete this entry?")) return;
+      const res = await fetch(`/delete_log/${id}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) row.remove();
+    }
+    logsBody.addEventListener('click', (e) => {
+      if (e.target.classList.contains('deleteBtn')) {
+        const row = e.target.closest('tr');
+        const id = row.getAttribute('data-id');
+        deleteEntry(id, row);
+      }
+    });
+
+    /* =============== DELETE ALL =============== */
+    document.getElementById('deleteAllBtn').addEventListener('click', async () => {
+      if (!confirm('Delete all log history? This cannot be undone.')) return;
+      const res = await fetch('/delete_all_logs', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        logsBody.innerHTML = '';
+        alert('All logs deleted successfully.');
+      }
+    });
+
+    /* =============== LIVE UPDATE (polling /logs + /latest_threat) =============== */
+    async function fetchLogs() {
+      try {
+        const res = await fetch('/logs');
+        const json = await res.json();
+        if (!json.logs) return;
+
+        logsBody.innerHTML = json.logs.map(entry => `
+          <tr class="hover:bg-gray-50" data-id="${entry.id}">
+            <td class="px-4 py-3 text-sm text-gray-700">${entry.time}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${entry.ip}</td>
+            <td class="px-4 py-3 text-sm text-blue-600 break-all">${entry.url}</td>
+            <td class="px-4 py-3 text-sm">${entry.status === 'Phishing'
+              ? '<span class="bg-red-100 text-red-700 px-3 py-1 rounded">Phishing</span>'
+              : entry.status === 'Legitimate'
+              ? '<span class="bg-green-100 text-green-700 px-3 py-1 rounded">Legitimate</span>'
+              : `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded">${entry.status}</span>`}</td>
+            <td class="px-4 py-3 text-sm text-center">
+              <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+            </td>
+          </tr>`).reverse().join('');
+      } catch (err) {
+        console.error('Error fetching logs:', err);
+      }
+    }
+
+    async function fetchLatestThreat() {
+      try {
+        const res = await fetch('/latest_threat');
+        const data = await res.json();
+        if (data && data.url) {
+          latestThreatBox.innerHTML = `
+            <div class="border-l-4 border-red-500 pl-4">
+              <p><strong>Time:</strong> ${data.time}</p>
+              <p><strong>IP:</strong> ${data.ip}</p>
+              <p><strong>URL:</strong> <span class="text-blue-600 break-all">${data.url}</span></p>
+              <p><strong>Status:</strong> ${data.result}</p>
+            </div>`;
+        }
+      } catch (err) {
+        console.warn('No latest threat yet.');
+      }
+    }
+
+    // Initial and interval refresh
+    fetchLogs();
+    fetchLatestThreat();
+    setInterval(fetchLogs, 2000);
+    setInterval(fetchLatestThreat, 2000);
+  </script>
+</body>
+</html>
+

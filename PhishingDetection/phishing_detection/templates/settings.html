@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-i18n="site.title7">PhishGuard AI — Settings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header / Nav -->
+  <header class="gradient-bg text-white shadow-lg">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="PhishGuard AI Logo" class="w-8 h-8 object-contain" />
+        </div>
+        <h1 class="text-2xl font-bold" data-i18n="brand.name">PhishGuard AI</h1>
+
+        <!-- ✅ Language selector moved beside title -->
+        <div class="lang-select" id="langSelect" aria-haspopup="listbox">
+          <button id="langToggle" class="text-sm font-medium focus:outline-none" aria-expanded="false" aria-label="Select language">
+            <span id="langLabel">🇺🇸 English</span>
+            <svg class="w-4 h-4 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="lang-options" id="langOptions" role="listbox" aria-label="Language options">
+            <button data-lang="en" class="flex items-center gap-3" role="option" aria-selected="true">
+              <span>🇺🇸</span>
+              <span>English</span>
+            </button>
+            <button data-lang="my" class="flex items-center gap-3" role="option" aria-selected="false">
+              <span>🇲🇾</span>
+              <span>Bahasa Melayu</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+            <!-- Main nav links -->
+      <div class="flex flex-wrap items-center gap-6 text-white text-base">
+        <a href="{{ url_for('home') }}" class="transition-colors text-blue-200 font-semibold" data-i18n="nav.home">Home</a>
+        <a href="{{ url_for('live_dashboard') }}" class="transition-colors hover:text-blue-200" data-i18n="nav.live">Live Dashboard</a>
+        <a href="{{ url_for('features') }}" class="transition-colors hover:text-blue-200" data-i18n="nav.features">Features</a>
+        <a href="{{ url_for('home') }}" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors" data-i18n="nav.getStarted">Get Started</a>
+          <a href="{{ url_for('login') }}" class="bg-white text-blue-700 px-3 py-1 rounded">Developer</a>
+
+        <!-- Dark mode toggle -->
+        <div class="flex items-center space-x-2 ml-2">
+          <label class="flex items-center space-x-2 cursor-pointer" title="Toggle dark mode">
+            <input id="darkToggle" type="checkbox" class="sr-only" />
+            <div class="w-10 h-6 bg-white rounded-full p-1">
+              <div id="darkThumb" class="w-4 h-4 bg-gray-800 rounded-full transition transform"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center" data-i18n="setting.title">Website Settings</h1>
+
+    <!-- 🌐 Language Section -->
+    <section class="bg-white p-5 rounded-2xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-3" data-i18n="settings.languageTitle">🌐 Language & Region</h2>
+      <label for="language" class="block mb-2" data-i18n="settings.languageLabel">Select Language:</label>
+      <select id="language" class="w-full p-2 border rounded-lg">
+        <option value="en">English</option>
+        <option value="bm">Bahasa Melayu</option>
+      </select>
+    </section>
+
+    <!-- 🧠 Accessibility Section -->
+    <section class="bg-white p-5 rounded-2xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-3" data-i18n="settings.accessibilityTitle">🧠 Accessibility & Appearance</h2>
+
+      <div class="flex items-center justify-between mb-3">
+        <span data-i18n="settings.darkMode"> Dark Mode</span>
+        <input type="checkbox" id="fontToggle" class="w-5 h-5 accent-blue-600">
+      </div>
+        <div class="flex items-center justify-between mb-3">
+        <span data-i18n="settings.largeText">Large Text</span>
+        <input type="checkbox" id="fontToggle" class="w-5 h-5 accent-blue-600">
+      </div>
+        <div class="flex items-center justify-between mb-3">
+        <span data-i18n="settings.readableFont">Readable Font</span>
+        <input type="checkbox" id="fontToggle" class="w-5 h-5 accent-blue-600">
+      </div>
+
+      <div class="flex items-center justify-between">
+        <span data-i18n="settings.fontSize">Font Size</span>
+        <select id="textSize" class="p-1 border rounded-lg">
+          <option value="sm" data-i18n="font.sm">Small</option>
+          <option value="md" data-i18n="font.md" selected>Medium</option>
+          <option value="lg" data-i18n="font.lg">Large</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- 📍 Location Section -->
+    <section class="bg-white p-5 rounded-2xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-3" data-i18n="settings.locationTitle">📍 Location</h2>
+      <p class="text-gray-600 mb-4" data-i18n="contact.officeAddress">
+          MCMC HQ Tower 1<br>
+          Jalan Impact, Cyber 6<br>
+          63000 Cyberjaya, Selangor, Malaysia
+      </p>
+
+      <div class="mt-4 rounded-lg overflow-hidden h-64">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.089527337536!2d101.64656267497316!3d2.9241899970301194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdb69c4ef0e179%3A0x96335f4f9f64d923!2sCyberjaya%2C%20Selangor!5e0!3m2!1sen!2smy!4v1696869099732!5m2!1sen!2smy"
+                width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+
+    <!-- 🧰 General Section -->
+    <section class="bg-white p-5 rounded-2xl shadow mb-6">
+      <h2 class="text-xl font-semibold mb-3" data-i18n="settings.generalTitle">🧰 General</h2>
+      <button id="resetButton" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600" data-i18n="settings.reset">Reset to Default</button>
+      <div class="mt-4 text-sm" data-i18n="settings.about">
+        <p>About this website: A simple, fast, and accessible platform built for everyone.</p>
+        <div class="mt-2 space-x-4">
+          <a href="{{ url_for('about') }}" class="text-blue-600 hover:underline" data-i18n="nav.about">About Us</a>
+          <a href="{{ url_for('contact') }}" class="text-blue-600 hover:underline" data-i18n="nav.contact">Contact Us</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/Logo1.png') }}" alt="PhishGuard AI Logo" class="w-8 h-8 object-contain" />
+              </div>
+            </div>
+            <h5 class="text-xl font-bold" data-i18n="brand.name">PhishGuard AI</h5>
+          </div>
+          <p class="text-gray-400" data-i18n="footer.tagline">
+            Advanced AI-powered phishing detection and protection for modern enterprises.
+          </p>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.product">Product</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('home') }}" class="hover:text-white transition-colors" data-i18n="nav.home">Home</a></li>
+            <li><a href="{{ url_for('live_dashboard') }}" class="hover:text-white transition-colors" data-i18n="nav.live">Live Dashboard</a></li>
+            <li><a href="{{ url_for('features') }}" class="hover:text-white transition-colors" data-i18n="nav.features">Features</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.company">Company</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('about') }}" class="hover:text-white transition-colors" data-i18n="nav.about">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}" class="hover:text-white transition-colors" data-i18n="nav.contact">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.support">Support</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('faq') }}" class="hover:text-white transition-colors" data-i18n="nav.faq">FAQ</a></li>
+            <li><a href="{{ url_for('settings') }}" class="hover:text-white transition-colors" data-i18n="nav.settings">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; <span id="year"></span> PhishGuard AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Accessibility -->
+  <button id="accessBtn" aria-label="Open accessibility panel" title="Accessibility options">
+    <span class="sr-only">Accessibility</span>
+    <span aria-hidden="true" style="font-size:20px;line-height:1;">♿</span>
+  </button>
+
+  <aside id="accessPanel" aria-hidden="true" aria-labelledby="accessTitle" role="dialog">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="accessTitle" class="text-lg font-semibold" data-i18n="panel.title">Accessibility</h2>
+      <button id="accessClose" class="text-black px-3 py-1 rounded bg-gray-100 hover:bg-gray-200" data-i18n="panel.close">Close</button>
+    </div>
+
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.darkMode">🌙 Dark Mode</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.darkModeDesc">Reduce glare for low-light environments</div>
+        </div>
+        <label class="switch" aria-label="Dark mode toggle">
+          <input id="panelDarkToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.largeText">📝 Large Text</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.largeTextDesc">Increase base text size for readability</div>
+        </div>
+        <label class="switch" aria-label="Large text toggle">
+          <input id="toggleLargeText" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.readableFont">📖 Readable Font</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.readableFontDesc">Use a simple, easier-to-read typeface</div>
+        </div>
+        <label class="switch" aria-label="Readable font toggle">
+          <input id="toggleArial" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div>
+        <div class="font-medium mb-2" data-i18n="panel.fontSize">Font Size</div>
+        <div class="flex items-center gap-2">
+          <button id="fontDec" class="px-3 py-1 border rounded">A-</button>
+          <button id="fontReset" class="px-3 py-1 border rounded">A</button>
+          <button id="fontInc" class="px-3 py-1 border rounded">A+</button>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <button id="accessReset" class="w-full bg-gray-200 text-black px-4 py-2 rounded" data-i18n="panel.reset">
+          Reset to defaults
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+</body>
+</html>

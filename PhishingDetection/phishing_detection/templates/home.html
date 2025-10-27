@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-i18n="site.title1">PhishGuard AI — Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header / Nav -->
+  <header class="gradient-bg text-white shadow-lg">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="PhishGuard AI Logo" class="w-8 h-8 object-contain" />
+        </div>
+        <h1 class="text-2xl font-bold" data-i18n="brand.name">PhishGuard AI</h1>
+
+        <!-- Language selector -->
+        <div class="lang-select" id="langSelect" aria-haspopup="listbox">
+          <button id="langToggle" class="text-sm font-medium focus:outline-none" aria-expanded="false" aria-label="Select language">
+            <span id="langLabel">🇺🇸 English</span>
+            <svg class="w-4 h-4 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="lang-options" id="langOptions" role="listbox" aria-label="Language options">
+            <button data-lang="en" class="flex items-center gap-3" role="option" aria-selected="true">
+              <span>🇺🇸</span> <span>English</span>
+            </button>
+            <button data-lang="my" class="flex items-center gap-3" role="option" aria-selected="false">
+              <span>🇲🇾</span> <span>Bahasa Melayu</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main nav links -->
+      <div class="flex flex-wrap items-center gap-6 text-white text-base">
+        <a href="{{ url_for('home') }}" class="transition-colors text-blue-200 font-semibold" data-i18n="nav.home">Home</a>
+        <a href="{{ url_for('live_dashboard') }}" class="transition-colors hover:text-blue-200" data-i18n="nav.live">Live Dashboard</a>
+        <a href="{{ url_for('features') }}" class="transition-colors hover:text-blue-200" data-i18n="nav.features">Features</a>
+        <a href="{{ url_for('home') }}" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors" data-i18n="nav.getStarted">Get Started</a>
+        <a href="{{ url_for('login') }}" class="bg-white text-blue-700 px-3 py-1 rounded">Developer</a>
+
+        <!-- Dark mode toggle -->
+        <div class="flex items-center space-x-2 ml-2">
+          <label class="flex items-center space-x-2 cursor-pointer" title="Toggle dark mode">
+            <input id="darkToggle" type="checkbox" class="sr-only" />
+            <div class="w-10 h-6 bg-white rounded-full p-1">
+              <div id="darkThumb" class="w-4 h-4 bg-gray-800 rounded-full transition transform"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="gradient-bg text-white py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 id="heroTitle" class="text-5xl font-bold mb-6" data-i18n="hero.title">
+        Advanced AI-Powered URL Phishing Detection
+      </h2>
+      <p id="heroDesc" class="text-xl mb-8 max-w-3xl mx-auto" data-i18n="hero.desc">
+        Protect your organization with real-time URL scanning, machine learning analysis, and instant alerts.
+        Stop malicious websites before users can access them.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a id="btnScanner" href="#scanner" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors" data-i18n="hero.try">
+          Try URL Scanner
+        </a>
+        <a id="btnDemo" href="{{ url_for('demo') }}" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors" data-i18n="hero.watch">
+          Watch Demo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- URL Scanner -->
+  <section id="scanner" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center mb-12 text-gray-800" data-i18n="scanner.title">Try Our AI URL Scanner</h3>
+      <div class="max-w-2xl mx-auto">
+        <div class="bg-gray-50 p-8 rounded-xl">
+          <form id="urlScanForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-white-700 mb-2" data-i18n="scanner.label">Enter URL to scan:</label>
+              <input type="url" id="urlInput" placeholder="https://example.com"
+                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" data-i18n="scanner.scan">
+              Scan URL with AI
+            </button>
+          </form>
+          <div id="scanResult" class="mt-6 hidden" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/Logo1.png') }}" alt="PhishGuard AI Logo" class="w-8 h-8 object-contain" />
+              </div>
+            </div>
+            <h5 class="text-xl font-bold" data-i18n="brand.name">PhishGuard AI</h5>
+          </div>
+          <p class="text-gray-400" data-i18n="footer.tagline">
+            Advanced AI-powered phishing detection and protection for modern enterprises.
+          </p>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.product">Product</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('home') }}" class="hover:text-white transition-colors" data-i18n="nav.home">Home</a></li>
+            <li><a href="{{ url_for('live_dashboard') }}" class="hover:text-white transition-colors" data-i18n="nav.live">Live Dashboard</a></li>
+            <li><a href="{{ url_for('features') }}" class="hover:text-white transition-colors" data-i18n="nav.features">Features</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.company">Company</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('about') }}" class="hover:text-white transition-colors" data-i18n="nav.about">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}" class="hover:text-white transition-colors" data-i18n="nav.contact">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h6 class="font-semibold mb-4" data-i18n="footer.support">Support</h6>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="{{ url_for('faq') }}" class="hover:text-white transition-colors" data-i18n="nav.faq">FAQ</a></li>
+            <li><a href="{{ url_for('settings') }}" class="hover:text-white transition-colors" data-i18n="nav.settings">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; <span id="year"></span> PhishGuard AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Accessibility -->
+  <button id="accessBtn" aria-label="Open accessibility panel" title="Accessibility options">
+    <span class="sr-only">Accessibility</span>
+    <span aria-hidden="true" style="font-size:20px;line-height:1;">♿</span>
+  </button>
+
+  <aside id="accessPanel" aria-hidden="true" aria-labelledby="accessTitle" role="dialog">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="accessTitle" class="text-lg font-semibold" data-i18n="panel.title">Accessibility</h2>
+      <button id="accessClose" class="text-black px-3 py-1 rounded bg-gray-100 hover:bg-gray-200" data-i18n="panel.close">Close</button>
+    </div>
+
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.darkMode">🌙 Dark Mode</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.darkModeDesc">Reduce glare for low-light environments</div>
+        </div>
+        <label class="switch" aria-label="Dark mode toggle">
+          <input id="panelDarkToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.largeText">📝 Large Text</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.largeTextDesc">Increase base text size for readability</div>
+        </div>
+        <label class="switch" aria-label="Large text toggle">
+          <input id="toggleLargeText" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium" data-i18n="panel.readableFont">📖 Readable Font</div>
+          <div class="text-xs text-gray-500" data-i18n="panel.readableFontDesc">Use a simple, easier-to-read typeface</div>
+        </div>
+        <label class="switch" aria-label="Readable font toggle">
+          <input id="toggleArial" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div>
+        <div class="font-medium mb-2" data-i18n="panel.fontSize">Font Size</div>
+        <div class="flex items-center gap-2">
+          <button id="fontDec" class="px-3 py-1 border rounded">A-</button>
+          <button id="fontReset" class="px-3 py-1 border rounded">A</button>
+          <button id="fontInc" class="px-3 py-1 border rounded">A+</button>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <button id="accessReset" class="w-full bg-gray-200 text-black px-4 py-2 rounded" data-i18n="panel.reset">Reset to defaults</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+</body>
+</html>
