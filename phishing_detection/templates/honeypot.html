@@ -1,0 +1,31 @@
+<!-- templates/honeypot.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Honeypot — Suspicious Activity</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#fff6f6; color:#5b0b0b; margin:0; }
+    .wrap { max-width:900px; margin:80px auto; text-align:center; padding:40px; background:#fff; border-radius:12px; box-shadow:0 6px 30px rgba(0,0,0,0.08); }
+    h1 { color:#b91c1c; margin-bottom:12px; font-size:32px; }
+    p { font-size:16px; color:#333; line-height:1.6; }
+    .muted { color:#6b7280; font-size:14px; margin-top:16px; }
+    .small { font-size:13px; color:#9ca3af; }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="hp-title">
+    <h1 id="hp-title">🚨 Suspicious Activity Detected</h1>
+    <p>
+      Your IP (<strong>{{ ip }}</strong>) has been recorded for review. This site uses a detection system to identify suspicious or automated activity.
+    </p>
+
+    <p class="muted">
+      If you are a legitimate user who reached this page by mistake, please contact the site administrator.
+    </p>
+
+    <p class="small">This page is a honeypot trap. Access attempts are logged and may be blocked.</p>
+  </div>
+</body>
+</html>

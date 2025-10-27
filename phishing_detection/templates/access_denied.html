@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Access Denied - PhishGuard AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 flex flex-col items-center justify-center min-h-screen text-white text-center">
+  <div class="max-w-lg">
+    <div class="mb-6">
+      <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="PhishGuard Logo" class="w-16 h-16 mx-auto">
+    </div>
+
+    <h1 class="text-5xl font-bold mb-4">🚫 Access Denied</h1>
+    <p class="text-lg text-gray-300 mb-8">
+      Your access has been blocked due to suspicious phishing activity.
+      <br>
+      Please contact your system administrator if this is an error.
+    </p>
+
+    <a href="{{ url_for('home') }}"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
+      Return to Home
+    </a>
+  </div>
+</body>
+</html>
