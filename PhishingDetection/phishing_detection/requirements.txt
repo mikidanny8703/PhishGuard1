@@ -1,6 +1,0 @@
-Flask
-gunicorn
-pandas
-requests
-scikit-learn
-joblib

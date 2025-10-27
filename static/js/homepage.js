@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
 /* ---------- Translations ---------- */
@@ -295,23 +296,27 @@ const translations = {
     });
 }
 
+    /* ---------- FAQ Toggle ---------- */
     function toggleFAQ(id) {
-    const answer = document.getElementById(`answer-${id}`);
-    const icon = document.getElementById(`icon-${id}`);
-    if (!answer || !icon) return;
+        const answer = document.getElementById(`answer-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+        if (!answer || !icon) return;
 
-    const isHidden = answer.classList.contains('hidden');
+        const isHidden = answer.classList.contains('hidden');
 
-    // Hide all answers
-    document.querySelectorAll('[id^="answer-"]').forEach(a => a.classList.add('hidden'));
-    document.querySelectorAll('[id^="icon-"]').forEach(i => i.textContent = '+');
+        // Hide all answers
+        document.querySelectorAll('[id^="answer-"]').forEach(a => a.classList.add('hidden'));
+        document.querySelectorAll('[id^="icon-"]').forEach(i => i.textContent = '+');
 
-    // Toggle the clicked one
-    if (isHidden) {
-        answer.classList.remove('hidden');
-        icon.textContent = '−'; // change + to −
+        // Toggle the clicked one
+        if (isHidden) {
+            answer.classList.remove('hidden');
+            icon.textContent = '−'; // change + to −
+        }
     }
-}
+
+    // ✅ make toggleFAQ accessible to inline onclick handlers
+    window.toggleFAQ = toggleFAQ;
 
     const savedLang = localStorage.getItem('phishguard_lang') || 'en';
     if (langLabel) langLabel.textContent = (savedLang === 'my') ? '🇲🇾 Bahasa Melayu' : '🇺🇸 English';
@@ -672,9 +677,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- INITIAL DATA ---
   let threatsBlocked = 0;
-  let detectionAccuracy = 99.6;
-  let responseTime = 0.3;
-  let activeMonitors = 1;
+  let detectionAccuracy = 0;
+  let responseTime = 0;
+  let activeMonitors = 0;
 
   // --- UPDATE UI FUNCTION ---
   function updateSOC() {
